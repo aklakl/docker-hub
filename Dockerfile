@@ -13,8 +13,7 @@ MAINTAINER mingli <mingli19850915@gmail.com>
 # Install packages
 RUN apt-get update && apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-#RUN echo 'root:Anonymous' | chpasswd
-RUN sudo -s echo 'root:Anonymous' | sudo -s chpasswd
+RUN echo 'root:Anonymous' | chpasswd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # SSH login fix. Otherwise user is kicked off after login
