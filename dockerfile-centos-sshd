@@ -1,0 +1,29 @@
+# SSH
+# Version 0.0.1
+# centos SSH
+
+
+# IMAGES
+FROM centos
+
+# MAINTAINER
+MAINTAINER mingli <mingli19850915@gmail.com>
+
+# YUM
+RUN yum -y update
+RUN yum -y install vim net-tools openssh-server
+
+# SSH
+RUN ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
+RUN ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ED25519_key
+RUN ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key
+
+RUN mkdir /var/run/sshd
+RUN sed -i 's/session    required     pam_loginuid.so/#session    required     pam_loginuid.so/g' /etc/pam.d/sshd
+RUN echo "root:Anonymous" | chpasswd
+
+# EXPOSE
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd","-D"] 
