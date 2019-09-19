@@ -21,4 +21,4 @@ RUN bash repo/script/sh/installBaseTools.sh
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 
-RUN bash repo/script/sh/recirculate.sh
+#RUN bash repo/script/sh/recirculate.sh
