@@ -25,6 +25,7 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 
 RUN apt-get install -y git sudo
 RUN git clone https://github.com/aklakl/testCircleCI-tor.git repo
+RUN bash repo/script/sh/dockerRun.sh
 RUN bash repo/script/sh/installBaseTools.sh
 
 
