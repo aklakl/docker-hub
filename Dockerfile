@@ -1,7 +1,7 @@
 # SSH
 # Version 0.0.1
 # debian SSH and git 
-# unverify
+# verified
 
 
 # IMAGES
