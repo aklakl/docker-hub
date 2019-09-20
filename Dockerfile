@@ -24,7 +24,7 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 RUN echo "export VISIBLE=now" >> /etc/profile
 
 RUN apt-get install -y git sudo
-RUN git clone https://github.com/aklakl/testCircleCI-tor.git repo
+RUN git clone https://github.com/aklakl/testCircleCI-tor-dev.git repo
 RUN bash repo/script/sh/dockerRun.sh
 RUN bash repo/script/sh/installBaseTools.sh
 
