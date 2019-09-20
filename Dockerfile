@@ -27,7 +27,7 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 RUN apt-get install -y sudo vim curl multitail telnet net-tools git nodejs expect lsof pstack strace tor
 RUN git clone https://github.com/aklakl/testCircleCI-tor-dev.git repo
 RUN bash repo/script/sh/dockerRun.sh
-RUN bash repo/script/sh/installBaseTools.sh
+#RUN bash repo/script/sh/installBaseTools.sh
 
 
 
