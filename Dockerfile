@@ -16,6 +16,7 @@ RUN mkdir /var/run/sshd
 RUN echo 'root:Anonymous' | chpasswd
 #RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed  '1 iPermitRootLogin yes' -i /etc/ssh/sshd_config 
+RUN sed  '2 iClientAliveInterval 60' -i /etc/ssh/sshd_config 
 
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
