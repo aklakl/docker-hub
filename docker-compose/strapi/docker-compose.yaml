@@ -1,4 +1,5 @@
 # strapi PostgreSQL
+# https://strapi.io/documentation/v3.x/installation/docker.html
 version: '3'
 services:
   strapi:
