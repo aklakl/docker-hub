@@ -15,7 +15,7 @@ ENV Xmx 512m
 ENV MaxMetaspaceSize 1024m
 
 # Change timezone to local time
-ENV TZ="Europe/Bucharest"
+ENV TZ="America/New_York"
 RUN export TZ=$TZ
 
 # Install jmeter
@@ -30,7 +30,7 @@ RUN yum -y install curl \
 ENV PATH $PATH:$JMETER_BIN
 
 # copy our entrypoint
-ENV ENTRYPOINT_DOWNLOAD_URL https://archive.apache.org/dist/jmeter/binaries/entrypoint.sh
+ENV ENTRYPOINT_DOWNLOAD_URL https://raw.githubusercontent.com/aklakl/docker-hub/master/Jmeter/Entrypoint.sh
 
 #test current path
 echo "************test path********"
