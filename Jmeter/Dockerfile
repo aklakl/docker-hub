@@ -30,7 +30,7 @@ RUN yum -y install curl \
 ENV PATH $PATH:$JMETER_BIN
 
 # copy our entrypoint
-ENV ENTRYPOINT_DOWNLOAD_URL https://archive.apache.org/dist/jmeter/binaries/entrypoint.sh
+ENV ENTRYPOINT_DOWNLOAD_URL https://raw.githubusercontent.com/aklakl/docker-hub/jmeter/Jmeter/Entrypoint.sh
 
 #download entrypoint.sh
 RUN curl -L  ${ENTRYPOINT_DOWNLOAD_URL} >  /tmp/entrypoint.sh
