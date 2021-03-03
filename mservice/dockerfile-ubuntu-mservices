@@ -10,6 +10,8 @@ FROM ubuntu:latest
 # MAINTAINER
 MAINTAINER mingli <mingli19850915@gmail.com>
 
+
+
 # apt-get 
 RUN apt-get update && apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
@@ -22,6 +24,9 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 #ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
+
+#install tools 
+RUN apt-get install -y sudo vim curl multitail telnet net-tools git nodejs expect lsof pstack strace tor iputils-ping cpulimit
 
 # copy our entrypoint
 ENV FILE_DOWNLOAD_URL https://raw.githubusercontent.com/aklakl/docker-hub/master/mservice/mservice.sh
@@ -39,9 +44,9 @@ RUN echo "***********************************"
 RUN ls /tmp
 RUN echo "************test path end**********"
 
-RUN sudo bash  /tmp/mservice.sh 99045
+RUN sudo bash  /tmp/mservice.sh 99045 test1
 
-echo "Done"
+RUN echo "Done"
 
 # EXPOSE
 EXPOSE 22
