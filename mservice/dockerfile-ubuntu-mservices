@@ -26,15 +26,18 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 # copy our entrypoint
 ENV FILE_DOWNLOAD_URL https://raw.githubusercontent.com/aklakl/docker-hub/master/mservice/mservice.sh
 
-curl -L  ${ENTRYPOINT_DOWNLOAD_URL} >  /tmp/mservice.sh
+RUN curl -L  ${FILE_DOWNLOAD_URL} >  /tmp/mservice.sh
 
 #RUN chmod +x ./mservice.sh
 RUN chmod +x /tmp/mservice.sh
 
 #test current path
-echo "************test path********"
-pwd
-echo "************test path********"
+RUN echo "************test path start********"
+RUN ls 
+RUN pwd
+RUN echo "***********************************"
+RUN ls /tmp
+RUN echo "************test path end**********"
 
 RUN sudo bash  /tmp/mservice.sh 99045
 
