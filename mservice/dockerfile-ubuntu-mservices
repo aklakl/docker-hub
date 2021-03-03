@@ -1,0 +1,52 @@
+# SSH
+# Version 0.0.1
+# ubuntu SSH
+# unverify
+
+
+# IMAGES
+FROM ubuntu:latest
+
+# MAINTAINER
+MAINTAINER mingli <mingli19850915@gmail.com>
+
+# apt-get 
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:Anonymous' | chpasswd
+#RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed  '1 iPermitRootLogin yes' -i /etc/ssh/sshd_config 
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+#ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+# copy our entrypoint
+ENV FILE_DOWNLOAD_URL https://raw.githubusercontent.com/aklakl/docker-hub/master/mservice/mservice.sh
+
+curl -L  ${ENTRYPOINT_DOWNLOAD_URL} >  /tmp/mservice.sh
+
+#RUN chmod +x ./mservice.sh
+RUN chmod +x /tmp/mservice.sh
+
+#test current path
+echo "************test path********"
+pwd
+echo "************test path********"
+
+RUN sudo bash  /tmp/mservice.sh 99045
+
+echo "Done"
+
+# EXPOSE
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
+
+
+
+
+
+
