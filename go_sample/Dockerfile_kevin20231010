@@ -1,0 +1,50 @@
+# refer：https://docs.docker.com/build/building/multi-platform/
+FROM --platform=$TARGETPLATFORM docker.io/golang:1.20 AS builder
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
+
+
+WORKDIR /app
+
+COPY . .
+
+#RUN apt-get
+
+# Build
+RUN cd scripts && bash build_MacOS.sh
+#RUN cd surveycenter && 
+
+
+
+EXPOSE 8080/tcp
+
+# Run
+SHELL ["/bin/bash", "-c"]
+
+
+#==============================
+# FROM --platform=$TARGETPLATFORM docker.io/golang:1.20 AS builder
+
+# ARG USERNAME TOKEN TARGETOS TARGETARCH
+
+# WORKDIR /app
+
+# ENV GOPRIVATE=github.com/Overealityio/*
+# RUN echo "machine github.com login $USERNAME password $TOKEN" > ~/.netrc && chmod 600 ~/.netrc
+
+# COPY . .
+
+# ENV CGO_ENABLED=0
+# RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -gcflags "-N -l" -ldflags="-s -w" -o metaid pkg/main.go
+
+# FROM docker.io/busybox:latest
+
+# COPY --from=builder /app/cfg /cfg
+# COPY --from=builder /app/metaid /metaid
+# COPY --from=builder /app/cfg/application.yaml /application.yaml
+# COPY --from=builder /etc/ssl/certs /etc/ssl/certs
+
+# EXPOSE 8080/tcp
+
+# ENTRYPOINT ["/metaid"]

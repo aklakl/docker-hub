@@ -1,0 +1,21 @@
+FROM annship/annship-base:ubuntu18.04.3
+
+
+RUN mkdir -p /opt/annship/bin && \
+    mkdir -p /opt/annship/cfg && \
+    mkdir -p /opt/annship/lib && \
+    mkdir -p /opt/annship/log && \
+    mkdir -p /opt/annship/tmp && \
+    mkdir -p /opt/annship/dat
+COPY bin/annship /opt/annship/bin/annship
+RUN chmod 777 /opt/annship/bin/annship
+
+COPY zoneinfo.zip /opt/annship/lib/
+ENV ZONEINFO /opt/annship/lib/zoneinfo.zip
+
+ENV CONFIG_PATH /opt/annship/cfg
+COPY cfg /opt/annship/cfg
+COPY basecommercephpsdk /opt/annship/bin/basecommercephpsdk
+
+ENTRYPOINT ["/opt/annship/bin/annship"]
+
