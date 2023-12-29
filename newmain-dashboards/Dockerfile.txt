@@ -1,0 +1,56 @@
+FROM php:7.2.8-apache as dashboards_base
+
+ENV DEBIAN_FRONTEND "noninteractive"
+
+RUN apt-get update
+
+RUN apt-get -y install zip tzdata gpg libmcrypt-dev \
+ gcc make libpng-dev wget libxml2-dev imagemagick libmagickwand-dev
+
+# set up time zone data
+RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+RUN dpkg-reconfigure --frontend noninteractive tzdata
+
+# Enable modules
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install soap
+
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+
+RUN pecl install imagick
+RUN docker-php-ext-enable imagick
+
+RUN pecl install mcrypt-1.0.1
+RUN docker-php-ext-enable mcrypt
+
+RUN apt install -y libxslt-dev
+RUN docker-php-ext-install xsl
+
+RUN a2enmod rewrite ssl headers expires
+
+# Node and Javascript Package Installs
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt-get -y install nodejs
+RUN npm install -g yarn concurrently cross-env
+
+FROM dashboards_base
+
+WORKDIR /etc/apache2/sites-available
+COPY --chown=www-data:www-data ./server-configuration/etc/apache2/sites-available/* ./
+RUN sed -i 's@443@8000@;1s@^@Listen 8000\n@' /etc/apache2/ports.conf
+RUN sed -i 's@443@8000@' /etc/apache2/sites-available/client-dashboard.conf
+RUN a2ensite client-dashboard.conf HTTP-HTTPS-redirect.conf
+RUN a2dissite 000-default.conf
+RUN mkdir -p /etc/apache2/ssl
+RUN rm -rf /etc/apache2/ssl/*
+RUN openssl req -nodes -sha512 -newkey rsa:2048 -keyout /etc/apache2/ssl/selfsigned.key -out /etc/apache2/ssl/selfsigned.crt -x509 -days 365 -subj '/C=US/L=Lambertville/O=RobustWealth LLC/CN=*.demo.robustwealth.com'
+
+RUN mkdir -p /var/www/html/laravel/repo
+RUN ln -s /app /var/www/html/laravel/repo/clientDashboard
+
+WORKDIR /app
+RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/1b137f8bf6db3e79a38a5bc45324414a6b1f9df2/web/installer -O - -q | php -- --install-dir=/usr/local/bin --filename composer
+
+COPY --chown=www-data:www-data ./clientDashboard/bootstrap /app/bootstrap
+COPY --chown=www-data:www-data ./clientDashboard/storage /app/storage
